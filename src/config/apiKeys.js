@@ -1,24 +1,53 @@
-// API Keys Configuration
-// Replace with your actual API keys
+// API Keys and Configuration
+// IMPORTANT: These should be stored in environment variables in production
 
 export const API_KEYS = {
-  // Google Vision API Key
-  // Get your key from: https://console.cloud.google.com/apis/credentials
-  GOOGLE_VISION_API_KEY: 'AIzaSyCbIlDzLMqu7zXgWRhYpWItOR_oKcey0_w',
-
-  // Open Food Facts API (no key required)
-  OPEN_FOOD_FACTS_API: 'https://world.openfoodfacts.org/api/v0/product/',
-
-  // Google OAuth Client ID (provided by user)
-  GOOGLE_OAUTH_CLIENT_ID: '257971844278-1tdb5biqv27j9kmef24l8dhgnm0f7cif.apps.googleusercontent.com',
+  // OpenAI for AI features
+  OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY',
+  
+  // Google Vision for food scanning
+  GOOGLE_VISION_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY || 'YOUR_GOOGLE_VISION_API_KEY',
+  
+  // RevenueCat for premium subscriptions
+  REVENUECAT_API_KEY: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || 'YOUR_REVENUECAT_API_KEY',
+  
+  // Analytics
+  MIXPANEL_TOKEN: process.env.EXPO_PUBLIC_MIXPANEL_TOKEN || 'YOUR_MIXPANEL_TOKEN',
 };
 
-// Instructions for getting Google Vision API Key:
-// 1. Go to https://console.cloud.google.com/
-// 2. Create a new project or select existing one
-// 3. Enable the Vision API
-// 4. Go to Credentials and create an API key
-// 5. Replace 'YOUR_GOOGLE_VISION_API_KEY_HERE' with your actual key
-// 6. Restrict the key to Vision API for security
+// External API endpoints
+export const API_ENDPOINTS = {
+  // Open Food Facts API (no key required)
+  OPEN_FOOD_FACTS: 'https://world.openfoodfacts.org/api/v0',
+  
+  // Google Vision API
+  GOOGLE_VISION: 'https://vision.googleapis.com/v1/images:annotate',
+  
+  // OpenAI API
+  OPENAI: 'https://api.openai.com/v1',
+};
+
+// Security: Content moderation thresholds
+export const MODERATION_THRESHOLDS = {
+  COMMUNITY_POST: 0.8, // Confidence threshold for auto-approval
+  AI_CONTENT: 0.9, // Higher threshold for AI-generated content
+  USER_REPORT: 0.7, // Threshold for manual review
+};
+
+// Premium feature limits
+export const PREMIUM_LIMITS = {
+  FREE: {
+    AI_REQUESTS_PER_DAY: 10,
+    COMMUNITY_POSTS_PER_DAY: 3,
+    FOOD_SCANS_PER_DAY: 20,
+    EXERCISE_ACCESS: 'basic',
+  },
+  PREMIUM: {
+    AI_REQUESTS_PER_DAY: -1, // Unlimited
+    COMMUNITY_POSTS_PER_DAY: -1, // Unlimited
+    FOOD_SCANS_PER_DAY: -1, // Unlimited
+    EXERCISE_ACCESS: 'all',
+  },
+};
 
 export default API_KEYS;
