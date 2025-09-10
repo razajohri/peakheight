@@ -4,13 +4,13 @@
 export const API_KEYS = {
   // OpenAI for AI features
   OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY',
-  
+
   // Google Vision for food scanning
   GOOGLE_VISION_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY || 'YOUR_GOOGLE_VISION_API_KEY',
-  
+
   // RevenueCat for premium subscriptions
   REVENUECAT_API_KEY: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || 'YOUR_REVENUECAT_API_KEY',
-  
+
   // Analytics
   MIXPANEL_TOKEN: process.env.EXPO_PUBLIC_MIXPANEL_TOKEN || 'YOUR_MIXPANEL_TOKEN',
 };
@@ -19,10 +19,10 @@ export const API_KEYS = {
 export const API_ENDPOINTS = {
   // Open Food Facts API (no key required)
   OPEN_FOOD_FACTS: 'https://world.openfoodfacts.org/api/v0',
-  
+
   // Google Vision API
   GOOGLE_VISION: 'https://vision.googleapis.com/v1/images:annotate',
-  
+
   // OpenAI API
   OPENAI: 'https://api.openai.com/v1',
 };
