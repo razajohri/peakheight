@@ -1,6 +1,6 @@
 import { posts } from "../blog/posts";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://usepeakheight.com";
 
 export function GET() {
   const items = posts

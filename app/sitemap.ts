@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { posts } from "./blog/posts";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://usepeakheight.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogEntries = posts.map((post) => ({

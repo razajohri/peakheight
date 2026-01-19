@@ -25,7 +25,7 @@ const userAlly = "/assets/user-ally.png";
 const userMark = "/assets/user-mark.jpg";
 const userMo = "/assets/user-mo.png";
 const userSeva = "/assets/user-seva.png";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://usepeakheight.com";
 const appStoreUrl = "https://apps.apple.com/us/app/peak-height/id6752793377";
 
 const faqItems = [

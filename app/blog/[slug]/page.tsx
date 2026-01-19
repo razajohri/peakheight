@@ -9,7 +9,7 @@ type PageProps = {
   params: { slug: string };
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://usepeakheight.com";
 const appStoreUrl = "https://apps.apple.com/us/app/peak-height/id6752793377";
 
 export function generateStaticParams() {
