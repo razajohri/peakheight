@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { HeroText } from "@/components/animated-text/HeroText";
 import { AnimatedText } from "@/components/animated-text/AnimatedText";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ScrollReveal, Parallax, SectionNumber, StaggerContainer, StaggerItem, MagneticButton } from "@/components/ScrollAnimations";
 import { SectionDivider } from "@/components/SectionDivider";
+import { posts } from "./blog/posts";
 
 const appTodayScreen = "/assets/app-today-screen.svg";
 const appHubScreen = "/assets/app-hub-screen.svg";
@@ -23,15 +25,79 @@ const userAlly = "/assets/user-ally.png";
 const userMark = "/assets/user-mark.jpg";
 const userMo = "/assets/user-mo.png";
 const userSeva = "/assets/user-seva.png";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
+const appStoreUrl = "https://apps.apple.com/us/app/peak-height/id6752793377";
+
+const faqItems = [
+  {
+    q: "How long until I see results?",
+    a: "Most users notice posture improvements within 2-3 weeks. Measurable height gains typically appear after 2-3 months of consistent daily routines. Results vary based on age, genetics, and commitment.",
+  },
+  {
+    q: "Is this scientifically proven?",
+    a: "Yes! Our methods are based on peer-reviewed research in orthopedics, sports science, and nutrition. We focus on maximizing natural growth through proven factors: exercise, nutrition, sleep, and posture.",
+  },
+  {
+    q: "What age does this work for?",
+    a: "Best results are for ages 14-25 during active growth phases. However, adults of any age can benefit from improved posture, spine decompression, and better habits that maximize their natural height potential.",
+  },
+  {
+    q: "Can I really grow taller?",
+    a: "While genetics play a role, most people have 1-3 inches of untapped potential through posture correction, spine decompression, and optimized growth factors. We help you reach YOUR maximum natural height.",
+  },
+  {
+    q: "What makes Peak Height different?",
+    a: "We're the only app combining all 4 growth factors in one place: exercises, nutrition, sleep, and posture. Plus, our AI tracking, community support, and streak-based motivation keep you consistent—the key to results.",
+  },
+];
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const latestPosts = posts.slice(0, 3);
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "PeakHeight",
+      url: siteUrl,
+      logo: `${siteUrl}/assets/peakheight-logo.png`,
+      sameAs: [appStoreUrl],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "PeakHeight",
+      url: siteUrl,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/blog?query={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.a,
+        },
+      })),
+    },
+  ];
   
   return (
     <div ref={containerRef} className="min-h-screen flex flex-col bg-background text-foreground relative overflow-hidden">
       <Header />
       
       <main className="flex-1">
+        <script
+          type="application/ld+json"
+          // JSON-LD must be a string for injection.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         {/* Hero Section with Animated Text */}
         <section className="relative py-20 md:py-32 overflow-hidden border-b border-border">
           {/* Animated background gradient */}
@@ -68,7 +134,7 @@ export default function Home() {
                     className="text-lg h-14 px-8 bg-foreground text-background hover:bg-foreground/90 shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   >
                     <a
-                      href="https://apps.apple.com/us/app/peak-height/id6752793377"
+                      href={appStoreUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -511,6 +577,66 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Section 05 - Blog */}
+        <SectionDivider number="05" title="Blog" />
+        <section className="py-20 md:py-32 border-b border-border relative">
+          <div className="container px-4 md:px-6 relative z-10">
+            <ScrollReveal>
+              <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair mb-4">
+                  <AnimatedText
+                    text="Height Growth Guides and Tips"
+                    variant="reveal"
+                    delay={0}
+                    duration={1}
+                  />
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-6">
+                  Explore practical advice on posture, exercises, nutrition, and sleep.
+                </p>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-3">
+                {latestPosts.map((post) => (
+                  <article
+                    key={post.slug}
+                    className="rounded-2xl border border-border bg-card p-6 hover:border-primary/50 transition-colors"
+                  >
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {post.date} • {post.readTime}
+                    </p>
+                    <h3 className="text-xl font-semibold font-playfair mb-3">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="transition-colors hover:text-primary"
+                      >
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="text-muted-foreground mb-4">{post.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className="text-center mt-10">
+                <Link href="/blog" className="text-sm font-medium text-primary hover:underline">
+                  View all blog articles →
+                </Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="py-20 md:py-32 border-b border-border bg-muted/20">
           <div className="container px-4 md:px-6">
@@ -524,28 +650,7 @@ export default function Home() {
               </h2>
 
               <div className="space-y-4">
-                {[
-                  {
-                    q: "How long until I see results?",
-                    a: "Most users notice posture improvements within 2-3 weeks. Measurable height gains typically appear after 2-3 months of consistent daily routines. Results vary based on age, genetics, and commitment.",
-                  },
-                  {
-                    q: "Is this scientifically proven?",
-                    a: "Yes! Our methods are based on peer-reviewed research in orthopedics, sports science, and nutrition. We focus on maximizing natural growth through proven factors: exercise, nutrition, sleep, and posture.",
-                  },
-                  {
-                    q: "What age does this work for?",
-                    a: "Best results are for ages 14-25 during active growth phases. However, adults of any age can benefit from improved posture, spine decompression, and better habits that maximize their natural height potential.",
-                  },
-                  {
-                    q: "Can I really grow taller?",
-                    a: "While genetics play a role, most people have 1-3 inches of untapped potential through posture correction, spine decompression, and optimized growth factors. We help you reach YOUR maximum natural height.",
-                  },
-                  {
-                    q: "What makes Peak Height different?",
-                    a: "We're the only app combining all 4 growth factors in one place: exercises, nutrition, sleep, and posture. Plus, our AI tracking, community support, and streak-based motivation keep you consistent—the key to results.",
-                  },
-                ].map((faq, index) => (
+                {faqItems.map((faq, index) => (
                   <motion.details
                     key={index}
                     className="group p-6 rounded-xl border border-border bg-card"

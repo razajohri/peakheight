@@ -47,32 +47,51 @@ export default function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.description,
-    datePublished: post.date,
-    dateModified: post.date,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${siteUrl}/blog/${post.slug}`,
-    },
-    author: {
-      "@type": "Organization",
-      name: "PeakHeight",
-      url: siteUrl,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "PeakHeight",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/assets/peakheight-logo.png`,
+  const relatedPosts = posts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.description,
+      datePublished: post.date,
+      dateModified: post.date,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${siteUrl}/blog/${post.slug}`,
       },
+      author: {
+        "@type": "Organization",
+        name: "PeakHeight",
+        url: siteUrl,
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "PeakHeight",
+        logo: {
+          "@type": "ImageObject",
+          url: `${siteUrl}/assets/peakheight-logo.png`,
+        },
+      },
+      keywords: post.keywords.join(", "),
     },
-    keywords: post.keywords.join(", "),
-  };
+    ...(post.faq && post.faq.length > 0
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: post.faq.map((item) => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer,
+              },
+            })),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -81,7 +100,7 @@ export default function BlogPostPage({ params }: PageProps) {
         <script
           type="application/ld+json"
           // JSON-LD must be a string for injection.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <section className="border-b border-border bg-muted/20">
           <div className="container px-4 md:px-6 py-10 md:py-16">
@@ -151,6 +170,31 @@ export default function BlogPostPage({ params }: PageProps) {
                       <p className="text-muted-foreground">{item.answer}</p>
                     </div>
                   ))}
+                </div>
+              ) : null}
+
+              {relatedPosts.length > 0 ? (
+                <div className="space-y-4 pt-4">
+                  <h2 className="text-2xl md:text-3xl font-semibold font-playfair">
+                    Related articles
+                  </h2>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {relatedPosts.map((item) => (
+                      <Link
+                        key={item.slug}
+                        href={`/blog/${item.slug}`}
+                        className="rounded-xl border border-border p-4 hover:border-primary/50 transition-colors"
+                      >
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {item.date} • {item.readTime}
+                        </p>
+                        <p className="font-semibold text-foreground">{item.title}</p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {item.description}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               ) : null}
 
