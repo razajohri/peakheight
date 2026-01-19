@@ -146,6 +146,29 @@ export default function Home() {
                   </p>
                 </div>
 
+                {latestPosts.length > 0 ? (
+                  <div className="text-xs text-muted-foreground flex flex-wrap items-center justify-center gap-2">
+                    <span className="uppercase tracking-[0.2em] text-[10px] text-muted-foreground/80">
+                      Popular guides
+                    </span>
+                    {latestPosts.map((post) => (
+                      <Link
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        className="rounded-full border border-border px-3 py-1 text-[11px] hover:border-primary/60 hover:text-primary transition-colors"
+                      >
+                        {post.title}
+                      </Link>
+                    ))}
+                    <Link
+                      href="/blog"
+                      className="text-[11px] font-medium text-primary hover:underline"
+                    >
+                      View all →
+                    </Link>
+                  </div>
+                ) : null}
+
                 <div className="flex flex-col items-center gap-3">
                   <div className="flex items-center -space-x-3">
                     {[userAlly, userMark, userSeva, userMo].map((src, i) => (
@@ -199,6 +222,8 @@ export default function Home() {
                     className="rounded-[2.5rem] shadow-2xl w-full max-w-[280px] border-8 border-foreground/10"
                     loading="lazy"
                     quality={85}
+                    priority
+                    sizes="(min-width: 1024px) 280px, (min-width: 768px) 240px, 80vw"
                   />
                 </motion.div>
                 <motion.div
@@ -214,6 +239,7 @@ export default function Home() {
                     className="rounded-[2.5rem] shadow-2xl w-full max-w-[280px] border-8 border-foreground/10"
                     loading="lazy"
                     quality={85}
+                    sizes="(min-width: 1024px) 280px, (min-width: 768px) 240px, 80vw"
                   />
                 </motion.div>
                 <motion.div
@@ -229,6 +255,7 @@ export default function Home() {
                     className="rounded-[2.5rem] shadow-2xl w-full max-w-[280px] border-8 border-foreground/10"
                     loading="lazy"
                     quality={85}
+                    sizes="(min-width: 1024px) 280px, (min-width: 768px) 240px, 80vw"
                   />
                 </motion.div>
               </div>

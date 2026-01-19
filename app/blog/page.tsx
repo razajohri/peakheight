@@ -4,6 +4,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { posts } from "./posts";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://usepeakheight.com";
+
 export const metadata: Metadata = {
   title: "PeakHeight Blog - Height Growth Tips, Exercises, and Nutrition",
   description:
@@ -28,10 +30,60 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndexPage() {
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: "PeakHeight Blog",
+      url: `${siteUrl}/blog`,
+      description:
+        "Science-informed tips on posture, exercises, nutrition, and sleep for natural height potential.",
+      publisher: {
+        "@type": "Organization",
+        name: "PeakHeight",
+        url: siteUrl,
+        logo: {
+          "@type": "ImageObject",
+          url: `${siteUrl}/assets/peakheight-logo.png`,
+        },
+      },
+      blogPost: posts.map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: `${siteUrl}/blog/${post.slug}`,
+        datePublished: post.date,
+        dateModified: post.date,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Blog",
+          item: `${siteUrl}/blog`,
+        },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
       <main className="flex-1">
+        <script
+          type="application/ld+json"
+          // JSON-LD must be a string for injection.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <section className="border-b border-border bg-muted/20">
           <div className="container px-4 md:px-6 py-16 md:py-24">
             <div className="max-w-3xl">

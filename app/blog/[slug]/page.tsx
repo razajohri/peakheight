@@ -91,6 +91,30 @@ export default function BlogPostPage({ params }: PageProps) {
           },
         ]
       : []),
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Blog",
+          item: `${siteUrl}/blog`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: post.title,
+          item: `${siteUrl}/blog/${post.slug}`,
+        },
+      ],
+    },
   ];
 
   return (
@@ -120,6 +144,8 @@ export default function BlogPostPage({ params }: PageProps) {
               <span>{post.date}</span>
               <span>•</span>
               <span>{post.readTime}</span>
+              <span>•</span>
+              <span>Last updated {post.date}</span>
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
               {post.tags.map((tag) => (
