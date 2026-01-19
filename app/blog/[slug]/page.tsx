@@ -9,6 +9,7 @@ type PageProps = {
   params: { slug: string };
 };
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://peakheight.app";
 const appStoreUrl = "https://apps.apple.com/us/app/peak-height/id6752793377";
 
 export function generateStaticParams() {
@@ -28,10 +29,14 @@ export function generateMetadata({ params }: PageProps): Metadata {
     title: `${post.title} | PeakHeight Blog`,
     description: post.description,
     keywords: post.keywords,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       type: "article",
       title: post.title,
       description: post.description,
+      url: `/blog/${post.slug}`,
     },
   };
 }
@@ -42,10 +47,42 @@ export default function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/blog/${post.slug}`,
+    },
+    author: {
+      "@type": "Organization",
+      name: "PeakHeight",
+      url: siteUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "PeakHeight",
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/assets/peakheight-logo.png`,
+      },
+    },
+    keywords: post.keywords.join(", "),
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
       <main className="flex-1">
+        <script
+          type="application/ld+json"
+          // JSON-LD must be a string for injection.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <section className="border-b border-border bg-muted/20">
           <div className="container px-4 md:px-6 py-10 md:py-16">
             <Link

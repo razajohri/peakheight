@@ -15,6 +15,16 @@ export const metadata: Metadata = {
     "posture correction",
     "height growth app",
   ],
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    type: "website",
+    title: "PeakHeight Blog - Height Growth Tips, Exercises, and Nutrition",
+    description:
+      "Science-informed tips on posture, exercises, nutrition, and sleep for natural height potential.",
+    url: "/blog",
+  },
 };
 
 export default function BlogIndexPage() {
